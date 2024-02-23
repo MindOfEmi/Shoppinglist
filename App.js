@@ -3,6 +3,8 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 
 import { Items } from "./components/items";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faRotate} from "@fortawesome/free-solid-svg-icons/faRotate";
+import {faCartPlus} from "@fortawesome/free-solid-svg-icons/faCartPlus";
+
 
 export default function App() {
     const [task, setTask] = useState("");
@@ -13,7 +15,7 @@ export default function App() {
     }, []);
 
     function getItems() {
-        fetch('https://8d0b-2a02-8388-6101-73a0-59f4-f2b1-67cc-1689.ngrok-free.app/api/getItems')
+        fetch('https://f679-141-147-61-180.ngrok-free.app/api/getItems')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -33,7 +35,7 @@ export default function App() {
             setTaskItems([...taskItems, task]);
             setTask("");
 
-            const response = await fetch('https://8d0b-2a02-8388-6101-73a0-59f4-f2b1-67cc-1689.ngrok-free.app/api/addItem', {
+            const response = await fetch('https://f679-141-147-61-180.ngrok-free.app/api/addItem', {
                 method: 'GET',
                 headers: {
                     'name': targetTask,
@@ -54,7 +56,7 @@ export default function App() {
         itemsCopy.splice(index, 1);
         setTaskItems(itemsCopy);
 
-        const response = await fetch('https://8d0b-2a02-8388-6101-73a0-59f4-f2b1-67cc-1689.ngrok-free.app/api/deleteItem', {
+        const response = await fetch('https://f679-141-147-61-180.ngrok-free.app/api/deleteItem', {
             method: 'GET',
             headers: {
                 'name': taskItems[targetIndex].name,
@@ -94,7 +96,7 @@ export default function App() {
 
                 <TouchableOpacity onPress={handleAddTask}>
                     <View style={styles.addWrapper}>
-                        <Text style={styles.addText}>+</Text>
+                        <Text style={styles.addText}><FontAwesomeIcon icon={faCartPlus} size={24} /></Text>
                     </View>
                 </TouchableOpacity>
             </View>

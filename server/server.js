@@ -18,6 +18,10 @@ app.get("/api/getItems", async (req, res) => {
 
         let data = await col.find({}).toArray();
 
+        for (let i = 0; i < data.length; i++) {
+            data[i].name = decodeString(data[i].name);
+        }
+
         res.json(data);
     } catch (error) {
         console.log(error);
@@ -27,13 +31,15 @@ app.get("/api/getItems", async (req, res) => {
 });
 
 app.get("/api/deleteItem", async (req, res) => {
-    const name = req.headers["name"];
+    let name = req.headers["name"];
 
     try {
         await client.connect();
 
         const db = client.db(database);
         const col = db.collection(collection);
+
+        name = decodeString(name);
 
         await col.deleteOne({"name": name});
 
@@ -46,13 +52,15 @@ app.get("/api/deleteItem", async (req, res) => {
 });
 
 app.get("/api/addItem", async (req, res) => {
-    const name = req.headers["name"];
+    let name = req.headers["name"];
 
     try {
         await client.connect();
 
         const db = client.db(database);
         const col = db.collection(collection);
+
+        name = encodeString(name)
 
         await col.insertOne({"name": name});
 
@@ -67,3 +75,17 @@ app.get("/api/addItem", async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+function encodeString(string) {
+    string.replace("ä", "_ae_");
+    string.replace("ö", "_oe_");
+    string.replace("ü", "_ue_");
+    return string;
+}
+
+function decodeString(string) {
+    string.replace("_ae_", "ä");
+    string.replace("_oe_", "ö");
+    string.replace("_ue_", "ü");
+    return string;
+}
