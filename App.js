@@ -14,8 +14,10 @@ export default function App() {
         getItems();
     }, []);
 
+    const serverUrl = "https://a0ab-141-147-61-180.ngrok-free.app";
+
     function getItems() {
-        fetch('https://f679-141-147-61-180.ngrok-free.app/api/getItems')
+        fetch(serverUrl + '/api/getItems')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -35,7 +37,7 @@ export default function App() {
             setTaskItems([...taskItems, task]);
             setTask("");
 
-            const response = await fetch('https://f679-141-147-61-180.ngrok-free.app/api/addItem', {
+            const response = await fetch(serverUrl + '/api/addItem', {
                 method: 'GET',
                 headers: {
                     'name': targetTask,
@@ -56,7 +58,7 @@ export default function App() {
         itemsCopy.splice(index, 1);
         setTaskItems(itemsCopy);
 
-        const response = await fetch('https://f679-141-147-61-180.ngrok-free.app/api/deleteItem', {
+        const response = await fetch(serverUrl + '/api/deleteItem', {
             method: 'GET',
             headers: {
                 'name': taskItems[targetIndex].name,
